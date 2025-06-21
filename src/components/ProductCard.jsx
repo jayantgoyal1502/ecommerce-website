@@ -58,7 +58,11 @@ export default function ProductCard({ product, onEdit, onDelete }) {
         )}
         <Link to={`/product/${product._id || product.id}`}>
           {product.image && (
-            <img src={product.image} alt={product.name} className="w-full h-40 object-cover rounded-md" />
+            <img
+              src={product.image.startsWith('http') ? product.image : `${import.meta.env.VITE_API_BASE_URL}/uploads/${product.image}`}
+              alt={product.name}
+              className="w-full h-40 object-cover rounded-md"
+            />
           )}
           <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
         </Link>
