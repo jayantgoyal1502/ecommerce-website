@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function AdminCategories() {
   const { user } = useAuth();
   const [categories, setCategories] = useState([]);
@@ -11,7 +13,7 @@ export default function AdminCategories() {
 
   // Fetch categories
   useEffect(() => {
-    fetch("http://192.168.1.33:5050/api/categories")
+    fetch(`${API_BASE_URL}/api/categories`)
       .then((res) => res.json())
       .then(setCategories);
   }, [msg]);
@@ -20,7 +22,7 @@ export default function AdminCategories() {
   const handleAddCategory = async (e) => {
     e.preventDefault();
     setMsg("");
-    const res = await fetch("http://192.168.1.33:5050/api/categories", {
+    const res = await fetch(`${API_BASE_URL}/api/categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -40,7 +42,7 @@ export default function AdminCategories() {
   const handleAddSubcategory = async (e) => {
     e.preventDefault();
     setMsg("");
-    const res = await fetch(`http://192.168.1.33:5050/api/categories/${selectedCategory}/subcategories`, {
+    const res = await fetch(`${API_BASE_URL}/api/categories/${selectedCategory}/subcategories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -59,7 +61,7 @@ export default function AdminCategories() {
   // Delete category
   const handleDeleteCategory = async (id) => {
     if (!window.confirm("Delete this category?")) return;
-    const res = await fetch(`http://192.168.1.33:5050/api/categories/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/categories/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });
@@ -70,7 +72,7 @@ export default function AdminCategories() {
   // Delete subcategory
   const handleDeleteSubcategory = async (catId, subId) => {
     if (!window.confirm("Delete this subcategory?")) return;
-    const res = await fetch(`http://192.168.1.33:5050/api/categories/${catId}/subcategories/${subId}`, {
+    const res = await fetch(`${API_BASE_URL}/api/categories/${catId}/subcategories/${subId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });

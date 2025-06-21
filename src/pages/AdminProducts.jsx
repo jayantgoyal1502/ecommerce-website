@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function AdminProducts() {
   const { user } = useAuth();
   const [products, setProducts] = useState([]);
@@ -18,12 +20,12 @@ export default function AdminProducts() {
       navigate("/", { replace: true });
       return;
     }
-    fetch("http://192.168.1.33:5050/api/products")
+    fetch(`${API_BASE_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
       });
-    fetch("http://192.168.1.33:5050/api/categories")
+    fetch(`${API_BASE_URL}/api/categories`)
       .then((res) => res.json())
       .then(setCategories);
   }, [user, navigate, msg]);
@@ -48,7 +50,7 @@ export default function AdminProducts() {
     if (imageFile) {
       const data = new FormData();
       data.append("image", imageFile);
-      const res = await fetch("http://192.168.1.33:5050/api/products/upload", {
+      const res = await fetch(`${API_BASE_URL}/api/products/upload`, {
         method: "POST",
         body: data,
         headers: { Authorization: `Bearer ${user.token}` },
@@ -58,8 +60,8 @@ export default function AdminProducts() {
     }
     const method = editingProduct ? "PUT" : "POST";
     const url = editingProduct
-      ? `http://192.168.1.33:5050/api/products/${editingProduct._id}`
-      : "http://192.168.1.33:5050/api/products";
+      ? `${API_BASE_URL}/api/products/${editingProduct._id}`
+      : `${API_BASE_URL}/api/products`;
     const res = await fetch(url, {
       method,
       headers: {
@@ -84,7 +86,7 @@ export default function AdminProducts() {
   };
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this product?")) return;
-    const res = await fetch(`http://192.168.1.33:5050/api/products/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/products/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });

@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import ProductCard from "../components/ProductCard";
 import { useAuth } from "../context/AuthContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function Cosmetics() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -13,7 +15,7 @@ export default function Cosmetics() {
   const fileInputRef = useRef();
 
   useEffect(() => {
-    fetch("http://192.168.1.33:5050/api/products")
+    fetch(`${API_BASE_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
         const cosmetics = data.filter((item) => {
@@ -36,7 +38,7 @@ export default function Cosmetics() {
   };
   const handleDelete = async (product) => {
     if (!window.confirm("Delete this product?")) return;
-    const res = await fetch(`http://192.168.1.33:5050/api/products/${product._id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/products/${product._id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });
@@ -55,7 +57,7 @@ export default function Cosmetics() {
     if (editForm.image && editForm.image instanceof File) {
       const data = new FormData();
       data.append("image", editForm.image);
-      const res = await fetch("http://192.168.1.33:5050/api/products/upload", {
+      const res = await fetch(`${API_BASE_URL}/api/products/upload`, {
         method: "POST",
         body: data,
         headers: { Authorization: `Bearer ${user.token}` },
@@ -63,7 +65,7 @@ export default function Cosmetics() {
       const img = await res.json();
       imageUrl = img.url;
     }
-    const res = await fetch(`http://192.168.1.33:5050/api/products/${editModal.product._id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/products/${editModal.product._id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

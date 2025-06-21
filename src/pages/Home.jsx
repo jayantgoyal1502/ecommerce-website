@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import ProductCard from "../components/ProductCard";
 import { useAuth } from "../context/AuthContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function Home() {
   const { user } = useAuth();
   const [allProducts, setAllProducts] = useState([]);
@@ -27,7 +29,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!user?.role || user.role !== "admin") {
-      fetch("http://192.168.1.33:5050/api/products")
+      fetch(`${API_BASE_URL}/api/products`)
         .then((res) => res.json())
         .then((data) => setAllProducts(data));
     }
