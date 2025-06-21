@@ -126,7 +126,7 @@ npm run build
 
 **Jayant Goyal**  
 📧 jayantgoyal500@gmail.com  
-🌐 [LinkedIn](https://www.linkedin.com/in/jayantgoyal2002) **
+🌐 [LinkedIn](https://www.linkedin.com/in/jayantgoyal2002)
 
 ---
 
