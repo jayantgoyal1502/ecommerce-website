@@ -19,7 +19,7 @@ export default function ProductDetails() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`http://localhost:5050/api/products/${id}`)
+    fetch(`http://192.168.1.33:5050/api/products/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setProduct(data);
@@ -35,7 +35,7 @@ export default function ProductDetails() {
   useEffect(() => {
     // Check if user can review (has purchased and not reviewed)
     if (!user) return;
-    fetch("http://localhost:5050/api/orders/my", {
+    fetch("http://192.168.1.33:5050/api/orders/my", {
       headers: { Authorization: `Bearer ${user.token}` },
     })
       .then((res) => res.json())
@@ -54,7 +54,7 @@ export default function ProductDetails() {
   const handleReviewSubmit = async (e) => {
     e.preventDefault();
     if (!user) return toast.error("Login required");
-    const res = await fetch(`http://localhost:5050/api/products/${id}/review`, {
+    const res = await fetch(`http://192.168.1.33:5050/api/products/${id}/review`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

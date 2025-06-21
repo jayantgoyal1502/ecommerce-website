@@ -26,7 +26,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!user?.role || user.role !== "admin") {
-      fetch("http://localhost:5050/api/products")
+      fetch("http://192.168.1.33:5050/api/products")
         .then((res) => res.json())
         .then((data) => setAllProducts(data));
     }

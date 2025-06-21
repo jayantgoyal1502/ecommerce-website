@@ -18,12 +18,12 @@ export default function AdminProducts() {
       navigate("/", { replace: true });
       return;
     }
-    fetch("http://localhost:5050/api/products")
+    fetch("http://192.168.1.33:5050/api/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);
       });
-    fetch("http://localhost:5050/api/categories")
+    fetch("http://192.168.1.33:5050/api/categories")
       .then((res) => res.json())
       .then(setCategories);
   }, [user, navigate, msg]);
@@ -48,7 +48,7 @@ export default function AdminProducts() {
     if (imageFile) {
       const data = new FormData();
       data.append("image", imageFile);
-      const res = await fetch("http://localhost:5050/api/products/upload", {
+      const res = await fetch("http://192.168.1.33:5050/api/products/upload", {
         method: "POST",
         body: data,
         headers: { Authorization: `Bearer ${user.token}` },
@@ -58,8 +58,8 @@ export default function AdminProducts() {
     }
     const method = editingProduct ? "PUT" : "POST";
     const url = editingProduct
-      ? `http://localhost:5050/api/products/${editingProduct._id}`
-      : "http://localhost:5050/api/products";
+      ? `http://192.168.1.33:5050/api/products/${editingProduct._id}`
+      : "http://192.168.1.33:5050/api/products";
     const res = await fetch(url, {
       method,
       headers: {
@@ -84,7 +84,7 @@ export default function AdminProducts() {
   };
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this product?")) return;
-    const res = await fetch(`http://localhost:5050/api/products/${id}`, {
+    const res = await fetch(`http://192.168.1.33:5050/api/products/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });

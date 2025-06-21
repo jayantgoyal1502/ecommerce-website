@@ -9,7 +9,7 @@ export default function MyOrders() {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const res = await fetch(`http://localhost:5050/api/orders/my`, {
+        const res = await fetch(`http://192.168.1.33:5050/api/orders/my`, {
           headers: {
             Authorization: `Bearer ${user.token}`,
           },

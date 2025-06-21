@@ -12,7 +12,7 @@ export default function Navbar() {
   const adminRef = useRef(null);
 
   useEffect(() => {
-    fetch("http://localhost:5050/api/categories")
+    fetch("http://192.168.1.33:5050/api/categories")
       .then((res) => res.json())
       .then(setCategories);
   }, []);

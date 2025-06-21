@@ -95,8 +95,8 @@ npm start
 npm run dev
 ```
 
-- Frontend: [http://localhost:5173](http://localhost:5173)
-- Backend API: [http://localhost:5050](http://localhost:5050)
+- Frontend: [http://192.168.1.33:5173](http://192.168.1.33:5173)
+- Backend API: [http://192.168.1.33:5050](http://192.168.1.33:5050)
 
 ---
 
