@@ -86,9 +86,9 @@ export default function Home() {
       </section>
 
       {/* FILTERS + PRODUCTS SECTION */}
-      <section className="px-4 max-w-7xl mx-auto flex gap-8">
+      <section className="px-4 max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
         {/* Sidebar Filters */}
-        <aside className="w-64 bg-white rounded shadow p-4 h-fit hidden md:block">
+        <aside className="w-full md:w-64 bg-white rounded shadow p-4 h-fit mb-6 md:mb-0 hidden md:block">
           <h3 className="font-semibold mb-2">Search</h3>
           <input
             type="text"
@@ -168,7 +168,7 @@ export default function Home() {
       </section>
 
       {/* CATEGORIES OVERVIEW */}
-      <section className="px-4 max-w-7xl mx-auto">
+      <section className="px-2 sm:px-4 max-w-7xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6">Shop by Category</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
           {[
@@ -198,7 +198,7 @@ export default function Home() {
       </section>
 
       {/* NEW ARRIVALS */}
-      <section className="px-4 max-w-7xl mx-auto">
+      <section className="px-2 sm:px-4 max-w-7xl mx-auto">
         <h2 className="text-2xl font-semibold mb-6">New Arrivals</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {[...allProducts]

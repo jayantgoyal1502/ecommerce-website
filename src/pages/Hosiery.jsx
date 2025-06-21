@@ -83,7 +83,7 @@ export default function Hosiery() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-semibold mb-4">Hosiery Collection</h1>
-      <div className="flex gap-4 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {categories.map((cat) => (
           <button
             key={cat}
