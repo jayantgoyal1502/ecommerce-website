@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 
 import ProductCard from "../components/ProductCard";
@@ -8,6 +8,7 @@ import { useAuth } from "../context/AuthContext";
 export default function Home() {
   const { user } = useAuth();
   const [allProducts, setAllProducts] = useState([]);
+  const filtersRef = useRef(null);
 
   // Admin homepage
   if (user?.role === "admin") {
@@ -81,12 +82,17 @@ export default function Home() {
         <div>
           <h1 className="text-4xl sm:text-6xl font-bold text-pink-600">Shine with Elegance</h1>
           <p className="text-lg text-gray-600 mt-4">Jewellery • Cosmetics • Bangles • Hosiery</p>
-          <button className="mt-6 px-6 py-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition">Shop Now</button>
+          <button
+            className="mt-6 px-6 py-3 bg-pink-500 text-white rounded-full hover:bg-pink-600 transition"
+            onClick={() => filtersRef.current?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            Shop Now
+          </button>
         </div>
       </section>
 
       {/* FILTERS + PRODUCTS SECTION */}
-      <section className="px-4 max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
+      <section ref={filtersRef} className="px-4 max-w-7xl mx-auto flex flex-col md:flex-row gap-8">
         {/* Sidebar Filters */}
         <aside className="w-full md:w-64 bg-white rounded shadow p-4 h-fit mb-6 md:mb-0 hidden md:block">
           <h3 className="font-semibold mb-2">Search</h3>
