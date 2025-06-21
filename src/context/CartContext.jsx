@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { useAuth } from "./AuthContext";
 
 const CartContext = createContext();
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export function useCart() {
   return useContext(CartContext);
@@ -14,7 +15,7 @@ export function CartProvider({ children }) {
   // Fetch cart from backend when user logs in
   useEffect(() => {
     if (user && user.token) {
-      fetch("http://localhost:5050/api/cart", {
+      fetch(`${API_BASE_URL}/api/cart`, {
         headers: { Authorization: `Bearer ${user.token}` },
       })
         .then((res) => res.json())
@@ -26,7 +27,7 @@ export function CartProvider({ children }) {
 
   const addToCart = async (product) => {
     if (!user || !user.token) return;
-    const res = await fetch("http://localhost:5050/api/cart/add", {
+    const res = await fetch(`${API_BASE_URL}/api/cart/add`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -42,7 +43,7 @@ export function CartProvider({ children }) {
 
   const removeFromCart = async (productId) => {
     if (!user || !user.token) return;
-    const res = await fetch("http://localhost:5050/api/cart/remove", {
+    const res = await fetch(`${API_BASE_URL}/api/cart/remove`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -60,7 +61,7 @@ export function CartProvider({ children }) {
     if (!user || !user.token) return;
     const item = cartItems.find((i) => (i.product._id || i.product.id) === id);
     if (!item) return;
-    const res = await fetch("http://localhost:5050/api/cart/update", {
+    const res = await fetch(`${API_BASE_URL}/api/cart/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +79,7 @@ export function CartProvider({ children }) {
     if (!user || !user.token) return;
     const item = cartItems.find((i) => (i.product._id || i.product.id) === id);
     if (!item || item.quantity <= 1) return;
-    const res = await fetch("http://localhost:5050/api/cart/update", {
+    const res = await fetch(`${API_BASE_URL}/api/cart/update`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -94,7 +95,7 @@ export function CartProvider({ children }) {
 
   const clearCart = async () => {
     if (!user || !user.token) return;
-    const res = await fetch("http://localhost:5050/api/cart/clear", {
+    const res = await fetch(`${API_BASE_URL}/api/cart/clear`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${user.token}`,

@@ -2,6 +2,8 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function SubcategoryPage() {
   const { categoryName, subcategoryName } = useParams();
   const [products, setProducts] = useState([]);
@@ -9,7 +11,7 @@ export default function SubcategoryPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:5050/api/products")
+    fetch(`${API_BASE_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
         // Filter by category and subcategory

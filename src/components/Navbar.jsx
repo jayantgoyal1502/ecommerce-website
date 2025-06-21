@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function Navbar() {
   const { user, logout } = useAuth();
   const [showCategories, setShowCategories] = useState(false);
@@ -12,7 +14,7 @@ export default function Navbar() {
   const adminRef = useRef(null);
 
   useEffect(() => {
-    fetch("http://192.168.1.33:5050/api/categories")
+    fetch(`${API_BASE_URL}/api/categories`)
       .then((res) => res.json())
       .then(setCategories);
   }, []);

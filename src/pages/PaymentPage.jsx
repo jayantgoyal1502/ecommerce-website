@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import loadRazorpayScript from "../utils/loadRazorpay";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function PaymentPage() {
   const { cartItems, shippingInfo, clearCart } = useCart();
   const { user } = useAuth();
@@ -19,7 +21,7 @@ export default function PaymentPage() {
     }
 
     try {
-      const res = await fetch("http://localhost:5050/api/payment/create", {
+      const res = await fetch(`${API_BASE_URL}/api/payment/create`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,7 +43,7 @@ export default function PaymentPage() {
         },
         handler: async function (response) {
           // Payment succeeded
-          await fetch("http://localhost:5050/api/orders", {
+          await fetch(`${API_BASE_URL}/api/orders`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",

@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function AdminDashboard() {
   const { user } = useAuth();
   const [orders, setOrders] = useState([]);
@@ -12,7 +14,7 @@ export default function AdminDashboard() {
       navigate("/", { replace: true });
       return;
     }
-    fetch("http://localhost:5050/api/admin/orders", {
+    fetch(`${API_BASE_URL}/api/admin/orders`, {
       headers: {
         Authorization: `Bearer ${user.token}`,
       },
