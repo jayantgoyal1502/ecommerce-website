@@ -52,9 +52,6 @@ import categoryRoutes from "./routes/categoryRoutes.js";
 console.log("categoryRoutes:", typeof categoryRoutes);
 app.use("/api/categories", categoryRoutes);
 
-// ✅ Default test route
-app.get("/", (req, res) => res.send("API is running 🚀"));
-
 // ✅ Catch-all error handler for JSON errors
 app.use((err, req, res, next) => {
   console.error(err.stack);
