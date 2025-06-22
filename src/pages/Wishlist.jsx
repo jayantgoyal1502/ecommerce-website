@@ -1,5 +1,6 @@
 import { useWishlist } from "../context/WishlistContext";
 import { Link } from "react-router-dom";
+import getImageUrl from "../utils/getImageUrl";
 
 export default function Wishlist() {
   const { wishlist, removeFromWishlist } = useWishlist();
@@ -21,7 +22,7 @@ export default function Wishlist() {
                 {'\u2665'}
               </button>
               <Link to={`/product/${product._id || product.id}`}>
-                <img src={product.image} alt={product.name} className="w-full h-40 object-cover rounded-md" />
+                <img src={getImageUrl(product.image)} alt={product.name} className="w-full h-40 object-cover rounded-md" />
                 <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
                 <p className="text-sm text-gray-500">{product.type}</p>
                 <p className="text-pink-600 font-bold">₹{product.price}</p>

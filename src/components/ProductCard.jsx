@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export default function ProductCard({ product, onEdit, onDelete }) {
   const { addToCart } = useCart();
   const { user } = useAuth();
@@ -40,8 +42,15 @@ export default function ProductCard({ product, onEdit, onDelete }) {
     }
   };
 
-  // Show edit/delete only for admin, and only on category/product list pages (not in admin product management)
-  const showAdminActions = user?.role === "admin" && !location.pathname.startsWith("/admin/products");
+  // Show edit/delete only for admin
+  const showAdminActions = user?.role === "admin";
+
+  // Helper to get correct image URL
+  const getImageUrl = (image) => {
+    if (!image) return "";
+    if (image.startsWith("http")) return image;
+    return `${API_BASE_URL}${image.startsWith("/") ? "" : "/"}${image}`;
+  };
 
   return (
     <div className="border rounded-xl shadow p-3 w-full max-w-xs bg-white">
@@ -58,11 +67,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
         )}
         <Link to={`/product/${product._id || product.id}`}>
           {product.image && (
-            <img
-              src={product.image.startsWith('http') ? product.image : `${import.meta.env.VITE_API_BASE_URL}/uploads/${product.image}`}
-              alt={product.name}
-              className="w-full h-40 object-cover rounded-md"
-            />
+            <img src={getImageUrl(product.image)} alt={product.name} className="w-full h-40 object-cover rounded-md" />
           )}
           <h2 className="text-lg font-semibold mt-2">{product.name}</h2>
         </Link>
@@ -76,7 +81,7 @@ export default function ProductCard({ product, onEdit, onDelete }) {
         </p>
       </div>
       {/* Add to Cart for non-admins only */}
-      {user?.role !== "admin" && (
+      {user && user.role !== "admin" && (
         <button
           onClick={handleAdd}
           className="mt-3 bg-pink-500 text-white py-2 rounded hover:bg-pink-600 transition"
@@ -88,13 +93,17 @@ export default function ProductCard({ product, onEdit, onDelete }) {
       {showAdminActions && (
         <div className="flex gap-2 mt-2">
           <button
-            onClick={() => onEdit && onEdit(product)}
+            onClick={() => {
+              onEdit && onEdit(product);
+            }}
             className="bg-yellow-400 px-3 py-1 rounded text-white"
           >
             Edit
           </button>
           <button
-            onClick={() => onDelete && onDelete(product)}
+            onClick={() => {
+              onDelete && onDelete(product);
+            }}
             className="bg-red-500 px-3 py-1 rounded text-white"
           >
             Delete

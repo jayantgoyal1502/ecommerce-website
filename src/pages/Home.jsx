@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 
 import ProductCard from "../components/ProductCard";
 import { useAuth } from "../context/AuthContext";
+import getImageUrl from "../utils/getImageUrl";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -225,7 +226,7 @@ export default function Home() {
                 className="block border rounded-lg p-3 shadow hover:scale-105 transition"
               >
                 {product.image && (
-                  <img src={product.image} alt={product.name} className="h-40 object-cover w-full rounded" />
+                  <img src={getImageUrl(product.image)} alt={product.name} className="h-40 object-cover w-full rounded" />
                 )}
                 <h3 className="mt-2 font-semibold">{product.name}</h3>
                 <p className="text-sm text-gray-500">₹{product.price}</p>

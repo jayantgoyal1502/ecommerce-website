@@ -4,10 +4,18 @@ import Product from "../models/Product.js";
 export const getCart = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate("cart.product");
-    // Return cart with full product details merged in
-    const cart = (user.cart || []).map((item) => {
+    if (!user) {
+      console.error("User not found for cart fetch", req.user.id);
+      return res.status(404).json({ message: "User not found" });
+    }
+    // Defensive: skip cart items with missing products
+    const cart = (user.cart || []).reduce((acc, item) => {
       const prod = item.product;
-      return {
+      if (!prod) {
+        console.warn(`Cart item with missing product for user ${user._id}`);
+        return acc;
+      }
+      acc.push({
         id: prod._id,
         product: prod._id,
         name: prod.name,
@@ -15,11 +23,13 @@ export const getCart = async (req, res) => {
         image: prod.image,
         type: prod.type,
         quantity: item.quantity,
-      };
-    });
+      });
+      return acc;
+    }, []);
     res.json(cart);
   } catch (err) {
-    res.status(500).json({ message: "Error fetching cart" });
+    console.error("Error in getCart:", err);
+    res.status(500).json({ message: "Error fetching cart", error: err.message });
   }
 };
 

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useCart } from "../context/CartContext";
 import toast from "react-hot-toast";
+import getImageUrl from "../utils/getImageUrl";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -81,7 +82,7 @@ export default function ProductDetails() {
   return (
     <div className="max-w-4xl mx-auto p-4 flex flex-col sm:flex-row gap-6">
       <img
-        src={product.image}
+        src={getImageUrl(product.image)}
         alt={product.name}
         className="w-full sm:w-1/2 h-96 object-cover rounded"
       />
@@ -92,15 +93,17 @@ export default function ProductDetails() {
         <p className="text-gray-600">
           <strong>Category:</strong> {product.type}
         </p>
-        <button
-          onClick={() => {
-            addToCart(product);
-            toast.success(`${product.name} added to cart`);
-          }}
-          className="bg-pink-500 text-white px-6 py-2 rounded hover:bg-pink-600 transition"
-        >
-          Add to Cart
-        </button>
+        {user?.role !== "admin" && (
+          <button
+            onClick={() => {
+              addToCart(product);
+              toast.success(`${product.name} added to cart`);
+            }}
+            className="bg-pink-500 text-white px-6 py-2 rounded hover:bg-pink-600 transition"
+          >
+            Add to Cart
+          </button>
+        )}
         <button
           onClick={() => navigate(-1)}
           className="text-sm text-pink-500 underline"

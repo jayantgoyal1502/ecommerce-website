@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import ProductCard from "../components/ProductCard";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -84,9 +85,10 @@ export default function AdminProducts() {
     setForm({ name: prod.name, type: prod.type, price: prod.price, image: prod.image });
     setImageFile(null);
   };
-  const handleDelete = async (id) => {
+  // Update handleDelete to accept product object
+  const handleDelete = async (product) => {
     if (!window.confirm("Delete this product?")) return;
-    const res = await fetch(`${API_BASE_URL}/api/products/${id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/products/${product._id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });
@@ -168,6 +170,17 @@ export default function AdminProducts() {
         </div>
         {msg && <div className="text-pink-600 text-sm">{msg}</div>}
       </form>
+      <h2 className="text-xl font-bold mb-4 mt-8">All Products</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <ProductCard
+            key={product._id}
+            product={product}
+            onEdit={handleEdit}
+            onDelete={handleDelete}
+          />
+        ))}
+      </div>
     </div>
   );
 }

@@ -59,7 +59,7 @@ app.use((err, req, res, next) => {
 });
 
 // Serve uploads (public/uploads from project root)
-app.use("/uploads", express.static(path.join(__dirname, "../../public/uploads")));
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
 // Serve frontend build (dist from project root)
 app.use(express.static(path.join(__dirname, "../dist")));

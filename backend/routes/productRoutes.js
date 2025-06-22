@@ -5,18 +5,19 @@ import { verifyUser, isAdmin } from "../middleware/authMiddleware.js";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import cloudinary from "../utils/cloudinary.js";
 const router = express.Router();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../../public/uploads"));
-  },
-  filename: function (req, file, cb) {
-    cb(null, Date.now() + "-" + file.originalname);
+// Cloudinary storage for uploads
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: {
+    folder: "ecommerce_uploads",
+    allowed_formats: ["jpg", "jpeg", "png", "webp", "avif"],
   },
 });
 const upload = multer({ storage });
@@ -91,8 +92,8 @@ router.post("/upload", verifyUser, isAdmin, (req, res) => {
     if (!req.file) {
       return res.status(400).json({ message: "No file uploaded" });
     }
-    const url = `/uploads/${req.file.filename}`;
-    res.json({ url });
+    // Cloudinary puts the URL in req.file.path or req.file.secure_url
+    res.json({ url: req.file.path || req.file.secure_url });
   });
 });
 

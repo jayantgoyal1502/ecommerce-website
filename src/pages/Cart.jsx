@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import toast from "react-hot-toast";
+import getImageUrl from "../utils/getImageUrl";
 
 export default function Cart() {
   const { cartItems, removeFromCart, increaseQty, decreaseQty, clearCart } = useCart();
@@ -39,7 +40,7 @@ export default function Cart() {
           {cartItems.map((item) => (
             <div key={item.id} className="flex items-center justify-between border-b pb-4">
               <div className="flex items-center gap-4">
-                {item.image && <img src={item.image} alt={item.name} className="h-20 w-20 object-cover rounded" />}
+                {item.image && <img src={getImageUrl(item.image)} alt={item.name} className="h-20 w-20 object-cover rounded" />}
                 <div>
                   <h2 className="font-semibold">{item.name}</h2>
                   <p className="text-sm text-gray-600">₹{item.price}</p>
