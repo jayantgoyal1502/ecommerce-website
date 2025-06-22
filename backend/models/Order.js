@@ -32,6 +32,14 @@ const orderSchema = new mongoose.Schema(
       type: String,
       default: "Processing",
     },
+    shiprocket: {
+      shipment_id: { type: String },
+      awb_code: { type: String },
+      courier_company_id: { type: String },
+      courier_name: { type: String },
+      tracking_url: { type: String },
+      status: { type: String },
+    },
   },
   { timestamps: true }
 );

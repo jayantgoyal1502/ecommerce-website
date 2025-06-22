@@ -17,6 +17,7 @@ import AdminProducts from "../pages/AdminProducts";
 import AdminCategories from "../pages/AdminCategories";
 import Wishlist from "../pages/Wishlist";
 import SubcategoryPage from "../pages/SubcategoryPage";
+import OrderDetails from "../pages/OrderDetails";
 
 export default function AppRoutes() {
   return (
@@ -34,6 +35,7 @@ export default function AppRoutes() {
       <Route path="/shipping" element={<ShippingPage />} />
       <Route path="/order-success" element={<OrderSuccess />} />
       <Route path="/orders" element={<MyOrders />} />
+      <Route path="/orders/:id" element={<OrderDetails />} />
       <Route path="/payment" element={<PaymentPage />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/admin/products" element={<AdminProducts />} />

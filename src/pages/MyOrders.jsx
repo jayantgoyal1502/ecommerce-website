@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import OrderTracking from "../components/OrderTracking";
+import { Link } from "react-router-dom";
 
 export default function MyOrders() {
   const { user } = useAuth();
@@ -65,6 +67,22 @@ export default function MyOrders() {
                   </li>
                 ))}
               </ul>
+              <div className="mt-3">
+                <Link
+                  to={`/orders/${order._id}`}
+                  className="text-blue-600 underline text-sm"
+                >
+                  View Order &amp; Tracking
+                </Link>
+              </div>
+              {/* Shipping & Tracking UI */}
+              {order.shiprocket && order.shiprocket.shipment_id ? (
+                <OrderTracking orderId={order._id} shipment={order.shiprocket} />
+              ) : (
+                <div className="mt-3 p-3 bg-yellow-50 rounded border text-yellow-700 text-sm">
+                  Shipping details will appear here once your order is shipped.
+                </div>
+              )}
             </div>
           ))}
         </div>

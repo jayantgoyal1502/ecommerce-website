@@ -1,5 +1,5 @@
 import express from "express";
-import { placeOrder, getUserOrders } from "../controllers/orderController.js";
+import { placeOrder, getUserOrders, trackOrder, getOrderById } from "../controllers/orderController.js";
 import { verifyUser } from "../middleware/authMiddleware.js"; // we'll build this middleware soon
 
 const router = express.Router();
@@ -13,5 +13,7 @@ router.get("/my", verifyUser, (req, res) => {
     getUserOrders(req, res);
   });
 });
+router.get("/track/:id", verifyUser, trackOrder); // Track order shipment by order ID
+router.get("/:id", verifyUser, getOrderById); // Get single order by ID
 
 export default router;
