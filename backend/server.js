@@ -13,7 +13,10 @@ const __dirname = path.dirname(__filename);
 
 // ✅ Allow all origins for dev (fix CORS issues)
 app.use(cors({
-  origin: true, // Reflect request origin
+  origin: [
+    "https://ecommerce-website-chi-taupe.vercel.app",
+    "http://localhost:5173"
+  ],
   credentials: true,
 }));
 
