@@ -127,8 +127,9 @@ export default function AdminProducts() {
           onChange={handleFormChange}
           className="border rounded px-2 py-1 w-full"
           required
+          disabled={categories.length === 0}
         >
-          <option value="">Select Category</option>
+          <option value="">{categories.length === 0 ? "No categories available" : "Select Category"}</option>
           {categories.map((cat) => (
             <option key={cat._id} value={cat.name}>{cat.name}</option>
           ))}
