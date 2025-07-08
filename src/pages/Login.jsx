@@ -8,6 +8,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const { login, user } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -17,7 +18,9 @@ export default function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const res = await login(email, password);
+    setLoading(false);
     if (res.success) {
       toast.success("Logged in successfully");
       navigate("/");
@@ -48,9 +51,10 @@ export default function Login() {
         />
         <button
           type="submit"
-          className="bg-pink-500 text-white px-4 py-2 rounded w-full"
+          className="bg-pink-500 text-white px-4 py-2 rounded w-full disabled:opacity-60"
+          disabled={loading}
         >
-          Login
+          {loading ? "Logging in..." : "Login"}
         </button>
       </form>
     </div>

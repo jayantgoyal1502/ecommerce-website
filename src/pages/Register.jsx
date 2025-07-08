@@ -9,6 +9,7 @@ export default function Register() {
   const [confirm, setConfirm] = useState("");
   const { register } = useAuth();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const passwordRegex =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^_-])[A-Za-z\d@$!%*#?&^_-]{8,}$/;
@@ -28,7 +29,9 @@ export default function Register() {
       return;
     }
 
+    setLoading(true);
     const res = await register(email, password);
+    setLoading(false);
     if (res.success) {
       toast.success("Registered successfully");
       navigate("/");
@@ -67,9 +70,10 @@ export default function Register() {
         />
         <button
           type="submit"
-          className="bg-pink-500 text-white px-4 py-2 rounded w-full"
+          className="bg-pink-500 text-white px-4 py-2 rounded w-full disabled:opacity-60"
+          disabled={loading}
         >
-          Register
+          {loading ? "Registering..." : "Register"}
         </button>
       </form>
     </div>

@@ -14,18 +14,20 @@ export default function AdminProducts() {
   const [imageFile, setImageFile] = useState(null);
   const [categories, setCategories] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [fetching, setFetching] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Always fetch products and categories for all users
-    fetch(`${API_BASE_URL}/api/products`)
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-      });
-    fetch(`${API_BASE_URL}/api/categories`)
-      .then((res) => res.json())
-      .then(setCategories);
+    setFetching(true);
+    Promise.all([
+      fetch(`${API_BASE_URL}/api/products`).then((res) => res.json()),
+      fetch(`${API_BASE_URL}/api/categories`).then((res) => res.json()),
+    ]).then(([productsData, categoriesData]) => {
+      setProducts(productsData);
+      setCategories(categoriesData);
+      setFetching(false);
+    });
     // Only redirect if user is logged in but not admin
     if (user && user.role !== "admin") {
       navigate("/", { replace: true });
@@ -48,17 +50,20 @@ export default function AdminProducts() {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     setMsg("");
+    setLoading(true);
     let imageUrl = form.image;
 
     // Prevent product creation if no image is selected
     if (!imageFile && !form.image) {
       setMsg("Please select an image for the product.");
+      setLoading(false);
       return;
     }
 
     if (imageFile) {
       const data = new FormData();
       data.append("image", imageFile);
+      setMsg("Uploading image...");
       const res = await fetch(`${API_BASE_URL}/api/products/upload`, {
         method: "POST",
         body: data,
@@ -67,6 +72,7 @@ export default function AdminProducts() {
       const img = await res.json();
       imageUrl = img.url;
     }
+    setMsg(editingProduct ? "Updating product..." : "Adding product...");
     const method = editingProduct ? "PUT" : "POST";
     const url = editingProduct
       ? `${API_BASE_URL}/api/products/${editingProduct._id}`
@@ -79,6 +85,7 @@ export default function AdminProducts() {
       },
       body: JSON.stringify({ ...form, image: imageUrl }),
     });
+    setLoading(false);
     if (res.ok) {
       setMsg(editingProduct ? "Product updated!" : "Product added!");
       setForm({ name: "", type: "", price: "", image: "" });
@@ -96,10 +103,13 @@ export default function AdminProducts() {
   // Update handleDelete to accept product object
   const handleDelete = async (product) => {
     if (!window.confirm("Delete this product?")) return;
+    setLoading(true);
+    setMsg("Deleting product...");
     const res = await fetch(`${API_BASE_URL}/api/products/${product._id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${user.token}` },
     });
+    setLoading(false);
     if (res.ok) setMsg("Product deleted");
     else setMsg("Error deleting product");
   };
@@ -111,6 +121,9 @@ export default function AdminProducts() {
 
   return (
     <div className="p-4 max-w-2xl mx-auto">
+      {fetching && (
+        <div className="text-center text-pink-600 mb-4">Loading products and categories...</div>
+      )}
       <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
       <form onSubmit={handleFormSubmit} className="mb-6 space-y-2 bg-gray-50 p-4 rounded">
         <input
@@ -168,16 +181,16 @@ export default function AdminProducts() {
           <img src={form.image} alt="Preview" className="h-16 mt-2" />
         )}
         <div className="flex gap-2">
-          <button type="submit" className="bg-pink-600 text-white px-4 py-2 rounded">
+          <button type="submit" className="bg-pink-600 text-white px-4 py-2 rounded" disabled={loading}>
             {editingProduct ? "Update Product" : "Add Product"}
           </button>
           {editingProduct && (
-            <button type="button" onClick={handleCancelEdit} className="text-gray-600 underline">
+            <button type="button" onClick={handleCancelEdit} className="text-gray-600 underline" disabled={loading}>
               Cancel
             </button>
           )}
         </div>
-        {msg && <div className="text-pink-600 text-sm">{msg}</div>}
+        {(msg || loading) && <div className="text-pink-600 text-sm">{msg}</div>}
       </form>
       <h2 className="text-xl font-bold mb-4 mt-8">All Products</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

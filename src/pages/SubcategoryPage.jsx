@@ -153,7 +153,7 @@ export default function SubcategoryPage() {
               onChange={handleEditImageChange}
               className="border rounded px-2 py-1 w-full mb-2"
             />
-            {typeof editForm.image === "string" && editForm.image && (
+            {typeof editForm.image === "string" && editForm.image && !editForm.imageFile && (
               <img src={editForm.image} alt="Preview" className="h-16 mb-2" />
             )}
             <button type="submit" className="bg-pink-600 text-white px-4 py-2 rounded w-full mt-2">Update</button>
