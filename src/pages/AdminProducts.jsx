@@ -17,10 +17,7 @@ export default function AdminProducts() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!user || user.role !== "admin") {
-      navigate("/", { replace: true });
-      return;
-    }
+    // Always fetch products and categories for all users
     fetch(`${API_BASE_URL}/api/products`)
       .then((res) => res.json())
       .then((data) => {
@@ -29,6 +26,10 @@ export default function AdminProducts() {
     fetch(`${API_BASE_URL}/api/categories`)
       .then((res) => res.json())
       .then(setCategories);
+    // Only redirect if user is logged in but not admin
+    if (user && user.role !== "admin") {
+      navigate("/", { replace: true });
+    }
   }, [user, navigate, msg]);
 
   // Update subcategories when category changes
