@@ -48,6 +48,13 @@ export default function AdminProducts() {
     e.preventDefault();
     setMsg("");
     let imageUrl = form.image;
+
+    // Prevent product creation if no image is selected
+    if (!imageFile && !form.image) {
+      setMsg("Please select an image for the product.");
+      return;
+    }
+
     if (imageFile) {
       const data = new FormData();
       data.append("image", imageFile);

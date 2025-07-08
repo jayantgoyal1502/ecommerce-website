@@ -47,6 +47,9 @@ router.get("/:id", async (req, res) => {
 router.post("/", verifyUser, isAdmin, async (req, res) => {
   try {
     const { name, type, price, image, subcategory } = req.body;
+    if (!image) {
+      return res.status(400).json({ message: "Image is required" });
+    }
     const product = new Product({ name, type, price, image, subcategory });
     await product.save();
     res.status(201).json(product);
